@@ -9,6 +9,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [selectedImage, setSelectedImage] = useState(null)
 
   const toggleOpen = () => {
     if (!isAnimating) {
@@ -18,6 +19,14 @@ export default function Home() {
         setIsOpen(!isOpen)
       }, 2500) // Total duration of the shrinking animation sequence
     }
+  }
+
+  const handleImageClick = (src) => {
+    setSelectedImage(src)
+  }
+
+  const handleCloseImage = () => {
+    setSelectedImage(null)
   }
 
   return (
@@ -53,36 +62,58 @@ export default function Home() {
             >
               <h2 className="text-3xl font-bold mb-6 text-center text-pink-600">{process.env.NEXT_PUBLIC_TITLE}</h2>
               <div className="grid grid-cols-2 gap-6 mb-8">
-                <Image
-                  src="/images/isda.jpg"
-                  alt="Girlfriend 1"
-                  width={250}
-                  height={250}
-                  className="rounded-lg shadow-md"
-                />
-                <Image
-                  src="/images/sha.jpg"
-                  alt="Girlfriend 2"
-                  width={250}
-                  height={250}
-                  className="rounded-lg shadow-md"
-                />
-                <Image
-                  src="/images/both.jpg"
-                  alt="Girlfriend 3"
-                  width={250}
-                  height={250}
-                  className="rounded-lg shadow-md"
-                />
-                <Image
-                  src="/images/shannen.jpg"
-                  alt="Girlfriend 4"
-                  width={250}
-                  height={250}
-                  className="rounded-lg shadow-md"
-                />
+                {["/images/isda.jpg", "/images/sha.jpg", "/images/both.jpg", "/images/shannen.jpg"].map((src, index) => (
+                  <motion.div
+                    key={index}
+                    whileHover={{ scale: 1.05 }}
+                    className="flex items-center justify-center cursor-pointer"
+                    onClick={() => handleImageClick(src)}
+                  >
+                    <Image
+                      src={src}
+                      alt={`Girlfriend ${index + 1}`}
+                      width={250}
+                      height={250}
+                      className="rounded-lg shadow-md"
+                    />
+                  </motion.div>
+                ))}
               </div>
               <Letter />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+            onClick={handleCloseImage}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image
+                src={selectedImage}
+                alt="Selected"
+                width={500}
+                height={500}
+                className="rounded-lg shadow-md"
+              />
+              <button
+                className="absolute top-2 right-2 bg-white text-black rounded-full p-2"
+                onClick={handleCloseImage}
+              >
+                &times;
+              </button>
             </motion.div>
           </motion.div>
         )}
