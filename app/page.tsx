@@ -9,7 +9,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
-  const [selectedImage, setSelectedImage] = useState(null)
+  const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
   const toggleOpen = () => {
     if (!isAnimating) {
@@ -21,7 +21,7 @@ export default function Home() {
     }
   }
 
-  const handleImageClick = (src) => {
+  const handleImageClick = (src: string) => {
     setSelectedImage(src)
   }
 
