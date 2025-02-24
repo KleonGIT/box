@@ -22,6 +22,10 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24 bg-gradient-to-r from-pink-100 to-purple-100">
+      {/* Add Analytics and SpeedInsights here */}
+      <Analytics />
+      <SpeedInsights />
+
       <motion.div
         className="bg-pink-300 w-64 h-64 rounded-lg shadow-lg flex items-center justify-center cursor-pointer hover:bg-pink-400 transition-colors"
         onClick={toggleOpen}
